@@ -51,7 +51,7 @@ TIME_ROUND = 10
 # =========================
 # HELPERS
 # =========================
-# same as before
+
 def cashflow_semiannual(maturity: date, settle: date):
     """Semiannual coupon dates AFTER settle up to maturity, stepping by 6 months."""
     d = maturity
@@ -65,7 +65,7 @@ def cashflow_semiannual(maturity: date, settle: date):
         d += relativedelta(months=6)
     return dates
 
-# seems pretty much the same as before
+
 def dirty_prices_from_clean(maturity_date: date, cpn_rate: float,
                             clean_vec: np.ndarray, pricing_dates: np.ndarray,
                             face: float):
