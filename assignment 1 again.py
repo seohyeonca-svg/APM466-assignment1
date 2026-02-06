@@ -442,7 +442,6 @@ Sigma_y = cov_yields_df.values
 
 # eigenvalues & eigenvectors
 eigvals_y, eigvecs_y = np.linalg.eigh(Sigma_y)
-# eigh is used because covariance matrices are symmetric
 
 # sort in descending order (largest eigenvalue first)
 idx = np.argsort(eigvals_y)[::-1]
