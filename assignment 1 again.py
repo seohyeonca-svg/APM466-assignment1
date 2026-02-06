@@ -317,14 +317,15 @@ forward_df.round(10).to_csv("q2_forward_table.csv")
 # Q5 (Covariance matrices)
 # ============================================================
 
+# YIELD PART
 YIELD_MATS = np.array([1.0, 2.0, 3.0, 4.0, 5.0], dtype=float)  # i = 1,...,5
 
 yields_daily = np.full((len(PRICING_DATES), len(YIELD_MATS)), np.nan, dtype=float)
 
 for j_day in range(len(PRICING_DATES)):
-    # curve points from Part (a): (T_k, Y_k) using 10 bonds
-    T_pts = ttm[j_day, :]   # times to maturity for the 10 bonds on that day
-    Y_pts = ytm[j_day, :]   # their YTMs (continuous comp, decimal)
+
+    T_pts = ttm[j_day, :]
+    Y_pts = ytm[j_day, :]
 
     good = (T_pts > 0) & np.isfinite(Y_pts)
     if np.sum(good) < 2:
@@ -344,9 +345,7 @@ yields_daily_df = pd.DataFrame(
 print("\nQ5: r_{i,j} yield levels from Part (a) YTM curve (10 days x 5 maturities), decimals:")
 print(yields_daily_df.round(10))
 
-# -------------------------
 # Compute X_{i,j} = log(r_{i,j+1} / r_{i,j}), j=1,...,9
-# -------------------------
 if np.any(~np.isfinite(yields_daily)):
     raise RuntimeError("Non-finite yield level encountered in yields_daily; cannot take log-returns.")
 if np.any(yields_daily <= 0):
@@ -365,9 +364,7 @@ X_yields_df = pd.DataFrame(
 print("\nQ5: X_{i,j} = daily log-returns of yields (9 x 5):")
 print(X_yields_df.round(10))
 
-# -------------------------
 # Covariance matrix of yield log-returns (5x5)
-# -------------------------
 cov_yields = np.cov(X_yields, rowvar=False, ddof=1)
 cov_yields_df = pd.DataFrame(
     cov_yields,
@@ -380,7 +377,6 @@ print(cov_yields_df.round(12))
 
 
 # FORWARDS PART
-
 F = forward_1y  # shape (10 x 4)
 F_NAMES = ["1yr-1yr", "1yr-2yr", "1yr-3yr", "1yr-4yr"]
 
@@ -412,9 +408,7 @@ cov_fwds_df = pd.DataFrame(cov_fwds, index=F_NAMES, columns=F_NAMES)
 print("\nQ5: Covariance matrix of daily log-returns of forward rates (4 x 4):")
 print(cov_fwds_df.round(12))
 
-# -------------------------
 # Save to CSV
-# -------------------------
 yields_daily_df.round(10).to_csv("q5_yield_levels_5mats.csv")
 X_yields_df.round(10).to_csv("q5_yield_logreturns.csv")
 cov_yields_df.round(12).to_csv("q5_cov_yield_logreturns.csv")
@@ -491,9 +485,7 @@ print(eigvals_f_df.round(12))
 print("\nEigenvectors of forward log-return covariance matrix (columns = PCs):")
 print(eigvecs_f_df.round(6))
 
-# =========================
 # Save results
-# =========================
 eigvals_y_df.to_csv("q5_yield_eigenvalues.csv")
 eigvecs_y_df.to_csv("q5_yield_eigenvectors.csv")
 
