@@ -251,7 +251,7 @@ for i, settle_ts in enumerate(pd.to_datetime(PRICING_DATES)):
 
     interp = linear_interp(t_pts[m], r_pts[m], extrapolate=False)
     Rg = interp(T_grid)
-    mask = np.isfinite(Rg)  # avoid plotting NaNs outside interpolation range
+    mask = np.isfinite(Rg)
     plt.plot(T_grid[mask], 100*Rg[mask], linewidth=1.5, label=str(settle_ts.date()))
 
 plt.xlabel("Time (years, days/365)")
@@ -317,9 +317,6 @@ forward_df.round(10).to_csv("q2_forward_table.csv")
 # Q5 (Covariance matrices)
 # ============================================================
 
-# -------------------------
-# 5 yield maturities (fixed maturities)
-# -------------------------
 YIELD_MATS = np.array([1.0, 2.0, 3.0, 4.0, 5.0], dtype=float)  # i = 1,...,5
 
 yields_daily = np.full((len(PRICING_DATES), len(YIELD_MATS)), np.nan, dtype=float)
@@ -381,9 +378,8 @@ cov_yields_df = pd.DataFrame(
 print("\nQ5: Covariance matrix of daily log-returns of yields (5 x 5):")
 print(cov_yields_df.round(12))
 
-# ============================================================
+
 # FORWARDS PART
-# ============================================================
 
 F = forward_1y  # shape (10 x 4)
 F_NAMES = ["1yr-1yr", "1yr-2yr", "1yr-3yr", "1yr-4yr"]
@@ -417,7 +413,7 @@ print("\nQ5: Covariance matrix of daily log-returns of forward rates (4 x 4):")
 print(cov_fwds_df.round(12))
 
 # -------------------------
-# Optional: save to CSV so nothing is truncated
+# Save to CSV
 # -------------------------
 yields_daily_df.round(10).to_csv("q5_yield_levels_5mats.csv")
 X_yields_df.round(10).to_csv("q5_yield_logreturns.csv")
@@ -428,7 +424,7 @@ X_fwds_df.round(10).to_csv("q5_forward_logreturns.csv")
 cov_fwds_df.round(12).to_csv("q5_cov_forward_logreturns.csv")
 
 # ============================================================
-# Eigen-decomposition of covariance matrices (Q5 results)
+# Q6 Eigen-decomposition of covariance matrices
 # ============================================================
 
 import numpy as np
@@ -496,7 +492,7 @@ print("\nEigenvectors of forward log-return covariance matrix (columns = PCs):")
 print(eigvecs_f_df.round(6))
 
 # =========================
-# Optional: save results
+# Save results
 # =========================
 eigvals_y_df.to_csv("q5_yield_eigenvalues.csv")
 eigvecs_y_df.to_csv("q5_yield_eigenvectors.csv")
